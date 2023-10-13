@@ -1,0 +1,3 @@
+class eventEmitter {
+  listeners = {};
+}
