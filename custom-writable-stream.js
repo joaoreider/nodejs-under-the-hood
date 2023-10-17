@@ -35,7 +35,6 @@ class FileWriteStream extends Writable {
         ++this.writesCount;
         callback();
       });
-      // this._flush(callback);
     }
 
     // when done, call callback
@@ -52,7 +51,15 @@ class FileWriteStream extends Writable {
       callback();
     });
   }
-  _destroy(){}
+  _destroy(error, callback){
+    console.log("Number of writes: ", this.writesCount)
+    if (this.fd) {
+      fs.close(this.fd, (err) => {
+        if(err) return callback(err || error);
+        callback();
+      });
+    }
+  }
 }
 
 const stream = new FileWriteStream({highWaterMark: 1800, fileName: 'text.txt'});
